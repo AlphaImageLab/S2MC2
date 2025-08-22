@@ -1,0 +1,76 @@
+NAME: 'RPC_Counting_Hourglass_Domain_Attention_SS_512'
+OUTPUT_DIR: '/home/hao/Desktop/Counting_CodeBase/output/RPC'
+CPU_MODE: False
+SHOW_STEP: 100
+COLOR_SPACE: 'RGB'
+CHECK_SIZE: (512, 512) # (384, 384)(256, 256)
+#NETWORK: 'RPCNetwork'
+#COMBINER: 'RPCCombiner'
+#NETWORK: 'RPCDomainNetwork'
+NETWORK: 'RPCDomainAttentionNetwork'
+COMBINER: 'RPCDomainCombiner'
+#NETWORK: 'RPCAttentionDCNetwork'
+#COMBINER: 'RPCDCCombiner'
+METRICS: ('ACDMetric', 'cAccuracyMetric', 'mCCD', 'mCIoU')
+
+DATASET:
+  DATASET: 'RPCSingleFixNoSample'
+  DATA_TYPE: 'jpg'
+  TEST_JSON: '/media/hao/Data/RPC/instances_test2019.json'
+#  TEST_JSON: '/media/hao/Data/RPC/sample/val/150_check_test_.json'
+  TEST_ROOT: '/media/hao/Data/RPC/test2019/'
+
+
+  SINGLE_JSON: '/media/hao/Data/RPC/single_features/RPC_Single_Image_Features_res50_l2_200/single_feature.json'
+  SINGLE_ROOT: '/media/hao/Data/RPC/single_features/RPC_Single_Image_Features_res50_l2_200/features/'
+#  SINGLE_JSON: '/media/hao/Data/RPC/single_features/RPC_Single_Image_Features_res50_l2_150/single_feature.json'
+#  SINGLE_ROOT: '/media/hao/Data/RPC/single_features/RPC_Single_Image_Features_res50_l2_150/features/'
+
+
+  NOSAMPLE_TYPE: 'part' # [part, all, fp]
+  LEVEL: 'avg' # [avg, easy, medium, hard]
+
+
+BACKBONE:
+  TYPE: 'hourglass'
+  HOURGLASS:
+    NUM_BLOCKS: 1
+    NUM_STACKS: 1
+    SCALE: 2
+
+TRANSFORMS:
+  TRAIN_TRANSFORMS: ('normal_resize',)
+  TEST_TRANSFORMS: ('normal_resize',)
+
+TEST:
+  BATCH_SIZE: 16 # 64
+  NUM_WORKERS: 8 # 8
+  # MODEL_FILE: '/home/hao/Desktop/Counting_CodeBase/output/RPC/RPC_Counting_Hourglass_RE/models/0.6962_best_model.pth'
+  #MODEL_FILE: '/home/hao/Desktop/Counting_CodeBase/output/RPC/RPC_Counting_Hourglass_Adv_SingleFix_RE/models/0.6519_best_model.pth' #
+  #MODEL_FILE: '/home/hao/Desktop/Counting_CodeBase/output/RPC/RPC_Counting_Hourglass_One_Single_R2/models/0.7435_best_model.pth'
+  #MODEL_FILE: '/home/hao/Desktop/Counting_CodeBase/output/RPC/RPC_Counting_Hourglass_Domain_AD/models/0.7538_best_model.pth'
+  #MODEL_FILE: '/home/hao/Desktop/Counting_CodeBase/output/RPC/RPC_Counting_Hourglass_Domain_AD_512/models/0.7520_best_model.pth'
+  #MODEL_FILE: '/home/hao/Desktop/Counting_CodeBase/output/RPC/RPC_Counting_Hourglass_Domain_AD_One_Single/models/0.7427_best_model.pth'
+  #MODEL_FILE: '/home/hao/Desktop/Counting_CodeBase/output/RPC/RPC_Counting_Hourglass_Domain_Attention_2/models/0.7501_best_model.pth'
+  #MODEL_FILE: '/home/hao/Desktop/Counting_CodeBase/output/RPC/RPC_Counting_Hourglass_Domain_Attention_4/models/0.7560_best_model.pth'
+  #MODEL_FILE: '/home/hao/Desktop/Counting_CodeBase/output/RPC/RPC_Counting_Hourglass_Domain_Attention_6/models/0.7500_best_model.pth'
+  #MODEL_FILE: '/home/hao/Desktop/Counting_CodeBase/output/RPC/RPC_Counting_Hourglass_Domain_Attention_8/models/0.7606_best_model.pth'
+  #MODEL_FILE: '/home/hao/Desktop/Counting_CodeBase/output/RPC/RPC_Counting_Hourglass_Domain_Attention_9/models/0.7637_best_model.pth'
+  #MODEL_FILE: '/home/hao/Desktop/Counting_CodeBase/output/RPC/RPC_Counting_Hourglass_Domain_Attention_10/models/0.7412_best_model.pth'
+  #MODEL_FILE: '/home/hao/Desktop/Counting_CodeBase/output/RPC/RPC_Counting_Hourglass_Domain_Attention_11/models/0.7366_best_model.pth'
+  #MODEL_FILE: '/home/hao/Desktop/Counting_CodeBase/output/RPC/RPC_Counting_Hourglass_Domain_Attention_12/models/0.7536_best_model.pth'
+  #MODEL_FILE: '/home/hao/Desktop/Counting_CodeBase/output/RPC/RPC_Counting_Hourglass_Domain_Attention_13/models/0.7428_best_model.pth'
+  #MODEL_FILE: '/home/hao/Desktop/Counting_CodeBase/output/RPC/RPC_Counting_Hourglass_Domain_Attention_9_64_384/models/0.7610_best_model.pth'
+#  MODEL_FILE: '/home/hao/Desktop/Counting_CodeBase/output/RPC/RPC_Counting_Hourglass_Domain_Attention_9_64_512/models/0.7896_best_model.pth'
+  #MODEL_FILE: '/home/hao/Desktop/Counting_CodeBase/output/RPC/RPC_Counting_Hourglass_Domain_Attention_9_DC/models/0.7565_best_model.pth'
+#  MODEL_FILE: '/home/hao/Desktop/Counting_CodeBase/output/RPC/RPC_Counting_Hourglass_Domain_Attention_9_DC_1/models/0.7531_best_model.pth'
+#  MODEL_FILE: '/home/hao/Desktop/Counting_CodeBase/output/RPC/RPC_Counting_Hourglass_Domain_Attention_9_DC_2/models/0.7619_best_model.pth'
+#  MODEL_FILE: '/home/hao/Desktop/Counting_CodeBase/output/RPC/RPC_Counting_Hourglass_150/models/0.5340_best_model.pth'
+#  MODEL_FILE: '/home/hao/Desktop/Counting_CodeBase/output/RPC/RPC_Counting_Hourglass_150_1/models/0.4933_best_model.pth'
+#  MODEL_FILE: '/home/hao/Desktop/Counting_CodeBase/output/RPC/RPC_Counting_Hourglass_Domain_150/models/0.5153_best_model.pth'
+#  MODEL_FILE: '/home/hao/Desktop/Counting_CodeBase/output/RPC/RPC_Counting_Hourglass_Domain_Attention_9_150/models/0.5190_best_model.pth'
+#  MODEL_FILE: '/home/hao/Desktop/Counting_CodeBase/output/RPC/RPC_Counting_Hourglass_Attention_DC_2/models/RPCSingleFixNoSample_hourglass_GAP_epoch_5.pth'
+#  MODEL_FILE: '/home/hao/Desktop/Counting_CodeBase/output/RPC/RPC_Counting_Hourglass_Attention_DC_1/models/RPCSingleFixNoSample_hourglass_GAP_epoch_35.pth'
+  MODEL_FILE: '/home/hao/Desktop/Counting_CodeBase/output/RPC/RPC_Counting_Hourglass_Domain_Attention_SS_512/models/0.8212_best_model.pth'
+#  MODEL_FILE: '/home/hao/Desktop/Counting_CodeBase/output/RPC/RPC_Counting_Hourglass_Domain_Attention/models/RPCSingleFixSample_hourglass_GAP_epoch_21.pth' #0.9265_best_model.pth
+  JSON_FILE: 'fp.json'

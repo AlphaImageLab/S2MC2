@@ -1,0 +1,76 @@
+NAME: 'RPC_Exemplar_3*8_Proto_C' # RPC_Single_Recognition_resnet50_200
+OUTPUT_DIR: '/home/hao/Desktop/Counting_CodeBase/output/RPC'
+SHOW_STEP: 20
+VALID_STEP: 10
+CPU_MODE: False
+COLOR_SPACE: 'RGB'
+CHECK_SIZE: (256, 256)
+SINGLE_SIZE: (256, 256)
+NETWORK: 'ClassificationNetwork'
+COMBINER: 'ClassificationCombiner'
+METRICS: ('AccuracyMetric',)
+#RESUME_MODEL: '/data/ActivityNet/Counting_CodeBase/output/RPC/RPC_Single_Recognition_512/models/RPCSingle_resnet50_l2_GMP_epoch_10.pth'
+
+DATASET:
+  DATASET: 'RPCSingle'
+  DATA_TYPE: 'jpg'
+#  TRAIN_JSON: '/media/hao/Data/RPC/instances_val2019.json'
+#  VALID_JSON: '/media/hao/Data/RPC/instances_test2019.json'
+#  SINGLE_JSON: '/media/hao/Data/RPC/instances_train2019.json'
+#  SINGLE_JSON: '/media/hao/Data/RPC/sample/val/150_single.json'
+#  SINGLE_JSON: '/media/hao/Data/RPC/sample/sub/183_single.json'
+  SINGLE_JSON: '/media/hao/Data/RPC/    TRAIN_ROOT: '/media/hao/Data/RPC/val2019/'
+#  VALID_ROOT: '/media/hao/Data/RPC/test2019/'
+#  SINGLE_ROOT: '/media/hao/Data/RPC/train2019/'
+  SINGLE_ROOT: '/media/hao/Data/RPC/cropped_val2019/'
+#  SINGLE_JSON: '/media/hao/Data/RPC/exemplar_test_24.json'
+#  SINGLE_ROOT: '/media/hao/Data/RPC/train2019/'
+#  SINGLE_JSON: '/media/hao/Data/RPC/ exemplar_test_24_1.json'
+#  SINGLE_ROOT: '/media/hao/Data/RPC/train2019/'
+  VALID_JSON: '/media/hao/Data/RPC/exemplar_test_24.json'
+  VALID_ROOT: '/media/hao/Data/RPC/train2019/'
+
+
+BACKBONE:
+  TYPE: 'resnet50' # resnet50_l2
+  PRETRAINED: True
+  #PRETRAINED_MODEL: '/data/Data/pretrain_models/resnet50.pth'
+
+MODULE:
+  TYPE: 'GMP'
+
+CLASSIFIER:
+  TYPE: 'Proto' # WScale FC
+  BIAS: False
+  FEATURE_NORM: False
+
+LOSS:
+  LOSS_TYPES: ('CrossEntropy',)
+
+TRAIN:
+  BATCH_SIZE: 16 # 32
+  MAX_EPOCH: 80
+  NUM_WORKERS: 8 # 30
+  OPTIMIZER:
+    TYPE: 'SGD'
+    BASE_LR: 0.01
+    MOMENTUM: 0.9
+    WEIGHT_DECAY: 1e-4 #.0 #1e-4
+  LR_SCHEDULER:
+    TYPE: 'multistep' # 'warmup' 'cosine' #'multistep'
+    LR_STEP: [20, 40]
+    LR_FACTOR: 0.1
+  TENSORBOARD:
+    ENABLE: False
+  SAMPLER:
+    TYPE: 'default'  #'weighted sampler' #default
+
+TRANSFORMS:
+  TRAIN_TRANSFORMS: ('normal_resize',)
+
+TEST:
+  BATCH_SIZE: 16 # 32
+  NUM_WORKERS: 8 # 30
+  MODEL_FILE: ''
+  # /home/hao/Desktop/Counting_CodeBase/output/RPC/RPC_Exemplar_3*8_Proto_S/models/0.9913_best_model.pth
+  # /home/hao/Desktop/Counting_CodeBase/output/RPC/RPC_Single_Recognition_resnet50_200/models/1.0000_best_model.pth

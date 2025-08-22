@@ -1,0 +1,68 @@
+NAME: 'RPC_Counting_Hourglass_Adv_SingleFix_150'
+OUTPUT_DIR: '/data/ActivityNet/Counting_CodeBase/output/RPC'
+SHOW_STEP: 100
+VALID_STEP: 1
+CPU_MODE: False
+COLOR_SPACE: 'RGB'
+CHECK_SIZE: (256, 256)
+SINGLE_SIZE: (64, 64)
+NETWORK: 'RPCAdversarialNetwork'
+COMBINER: 'RPCAdversarialCombiner'
+#COMBINER: 'RPCAdversarialTotalCombiner'
+METRICS: ('cAccuracyMetric', 'ACDMetric',)
+#RESUME_MODEL: '/data/ActivityNet/Counting_CodeBase/output/RPC/RPC_Counting_Hourglass_Adv_SingleFix_Total_R2/models/RPCSingleFixNoSample_hourglass_GAP_epoch_32.pth'
+#RESUME_MODE: 'all'
+
+DATASET:
+  DATASET: 'RPCSingleFixNoSample'
+  DATA_TYPE: 'jpg'
+  TRAIN_JSON: '/data/rpc/retail_product_checkout/sample/150_check.json'
+  VALID_JSON: '/data/rpc/retail_product_checkout/sample/150_check_test.json'
+  SINGLE_JSON: '/data/rpc/single_features/RPC_Single_Image_Features_res50_l2_200/nori/nori_single.json'
+  TRAIN_ROOT: '/data/rpc/retail_product_checkout/all/'
+  VALID_ROOT: '/data/rpc/retail_product_checkout/all/'
+  SINGLE_ROOT: '/data/rpc/single_features/RPC_Single_Image_Features_res50_l2_200/features/'
+
+  NOSAMPLE_TYPE: 'part' # [part, all, fp]
+#  FP_JSON: '/data/ActivityNet/Counting_CodeBase/output/RPC/RPC_Counting_Hourglass_Adv_SingleFix_Total/fp.json'
+  LEVEL: 'avg'
+
+
+BACKBONE:
+  TYPE: 'hourglass'
+  #PRETRAINED_MODEL: '/data/Data/pretrain_models/resnet50.pth'
+  HOURGLASS:
+    NUM_BLOCKS: 1
+    NUM_STACKS: 1
+    SCALE: 2
+
+LOSS:
+  LOSS_TYPES: ('MSE', )
+
+TRAIN:
+  BATCH_SIZE: 120
+  MAX_EPOCH: 80
+  NUM_WORKERS: 30
+  OPTIMIZER:
+    TYPE: 'SGD'
+    BASE_LR: 0.01
+    MOMENTUM: 0.9
+    WEIGHT_DECAY: 1e-4 #.0 #1e-4
+  LR_SCHEDULER:
+    TYPE: 'multistep' # 'warmup' 'cosine' #'multistep'
+#    LR_STEP: [20, 40]
+    LR_STEP: [20, ]
+    LR_FACTOR: 0.1
+  TENSORBOARD:
+    ENABLE: True
+  SAMPLER:
+    TYPE: 'default'  #'weighted sampler' #default
+
+TRANSFORMS:
+  TRAIN_TRANSFORMS: ('normal_resize',)
+  TEST_TRANSFORMS: ('normal_resize',)
+
+TEST:
+  BATCH_SIZE: 120
+  NUM_WORKERS: 30
+  MODEL_FILE: ''

@@ -1,0 +1,66 @@
+NAME: 'RPC_Counting_Hourglass_One_Single_R2'
+OUTPUT_DIR: '/home/hao/Desktop/Counting_CodeBase/output/RPC'
+SHOW_STEP: 100
+VALID_STEP: 5
+CPU_MODE: False
+COLOR_SPACE: 'RGB'
+CHECK_SIZE: (256, 256)
+SINGLE_SIZE: (512, 512)
+NETWORK: 'RPCNetwork'
+COMBINER: 'RPCCombiner'
+METRICS: ('cAccuracyMetric', 'ACDMetric',)
+#RESUME_MODEL: '/home/hao/Desktop/Counting_CodeBase/output/RPC/RPC_Counting_Hourglass_One_Single_R2/models/RPCSingleFixNoSampleOne_hourglass_GAP_epoch_47.pth'
+#RESUME_MODE: 'all' #state_dict
+
+DATASET:
+  DATASET: 'RPCSingleFixNoSampleOne'
+  DATA_TYPE: 'jpg'
+  TRAIN_JSON: '/media/hao/Data/RPC/instances_val2019.json'
+  VALID_JSON: '/media/hao/Data/RPC/instances_test2019.json'
+  SINGLE_JSON: '/media/hao/Data/RPC/single_features/RPC_Single_Image_Features_res50_l2_200/single_feature.json'
+  TRAIN_ROOT: '/media/hao/Data/RPC/val2019/'
+  VALID_ROOT: '/media/hao/Data/RPC/test2019/'
+  SINGLE_ROOT: '/media/hao/Data/RPC/single_features/RPC_Single_Image_Features_res50_l2_200/features/'
+
+  NOSAMPLE_TYPE: 'part' # [part, all, fp]            #--------------------------------------------------
+  # FP_JSON: '/data/ActivityNet/Counting_CodeBase/output/RPC/RPC_Counting_Hourglass_FP_One_Single/fp.json'
+
+
+BACKBONE:
+  TYPE: 'hourglass'
+  #PRETRAINED_MODEL: '/data/Data/pretrain_models/resnet50.pth'
+  HOURGLASS:
+    NUM_BLOCKS: 1
+    NUM_STACKS: 1
+    SCALE: 2
+
+LOSS:
+  LOSS_TYPES: ('MSE', )
+
+TRAIN:
+  BATCH_SIZE: 20 # 128
+  MAX_EPOCH: 80
+  NUM_WORKERS: 8 # 30
+  OPTIMIZER:
+    TYPE: 'SGD'
+    BASE_LR: 0.01                 #--------------------------------------------------
+    MOMENTUM: 0.9
+    WEIGHT_DECAY: 1e-4 #.0 #1e-4
+  LR_SCHEDULER:
+    TYPE: 'multistep' # 'warmup' 'cosine' #'multistep'
+#    LR_STEP: [20, 40]
+    LR_STEP: [20, ]              #--------------------------------------------------
+    LR_FACTOR: 0.1
+  TENSORBOARD:
+    ENABLE: True
+  SAMPLER:
+    TYPE: 'default'  #'weighted sampler' #default
+
+TRANSFORMS:
+  TRAIN_TRANSFORMS: ('normal_resize',)
+  TEST_TRANSFORMS: ('normal_resize',)
+
+TEST:
+  BATCH_SIZE: 64 # 128
+  NUM_WORKERS: 8 # 30
+  MODEL_FILE: ''
